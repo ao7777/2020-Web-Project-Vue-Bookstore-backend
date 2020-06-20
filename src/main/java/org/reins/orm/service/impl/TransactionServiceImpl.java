@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,18 +32,18 @@ public class TransactionServiceImpl implements TransactionService {
         java.util.Date time=new Date();
         java.sql.Timestamp date=new java.sql.Timestamp(time.getTime());
         orderEntity.setTransaction_date(date);
+        orderEntity.setUser_id(user.getId());
         user.getCartsEntitySet().forEach(
                 cartsEntity -> {
                     OrderItemEntity orderItemEntity = new OrderItemEntity();
                     orderItemEntity.setAmount(bookDao.getBookByISBN(cartsEntity.getIsbn()).getPrice());
-                    orderItemEntity.setId(user.getId());
                     orderItemEntity.setIsbn(cartsEntity.getIsbn());
                     orderItemEntity.setQuantity(cartsEntity.getQuantity());
                     orderItemEntity.setOrderEntity(orderEntity);
                     orderEntityList.add(orderItemEntity);
-                    BookEntity bookEntity=bookDao.getBookByISBN(orderItemEntity.getIsbn());
-                    bookEntity.setStorage(bookEntity.getStorage()-cartsEntity.getQuantity());
-                    bookEntity.setSales(bookEntity.getSales()+cartsEntity.getQuantity());
+                    BookEntity bookEntity = bookDao.getBookByISBN(orderItemEntity.getIsbn());
+                    bookEntity.setStorage(bookEntity.getStorage() - cartsEntity.getQuantity());
+                    bookEntity.setSales(bookEntity.getSales() + cartsEntity.getQuantity());
                     bookDao.updateBook(bookEntity);
                 }
         );
