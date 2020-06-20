@@ -8,13 +8,17 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
         new_generator_mappings: false
         format_sql: true
+        enable_lazy_load_no_trans: true
     show-sql: true
   datasource:
     url: jdbc:mysql://localhost:3306/bookStoreData?serverTimezone=UTC&useSSL=false&autoReconnect=true&tinyInt1isBit=false&useUnicode=true&characterEncoding=utf8
     username: root
     password: database2000
     driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    mongodb:
+      uri: mongodb://localhost/bookstoredata
 server:
-  port: 8090
+  port: 8070
   tomcat:
     uri-encoding: UTF-8

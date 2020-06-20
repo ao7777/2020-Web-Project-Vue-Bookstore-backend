@@ -1,28 +1,31 @@
 package org.reins.orm.entity;
 
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "user", schema = "bookstoredata", catalog = "")
 public class UserEntity {
-    private String id;
+    private int id;
     private String name;
     private String pwd;
     private Date joinDate;
     private String type;
     private String avatar;
+    private String email;
     @Id
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name = "increment", strategy = "increment")
     @Column(name = "id")
-    public String getId() {
+    public int getId() {
         return id;
     }
-
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -72,6 +75,14 @@ public class UserEntity {
         this.avatar = avatar;
     }
 
+    @Basic
+    @Column(name="email")
+    public String getEmail(){return email;}
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -79,22 +90,22 @@ public class UserEntity {
 
         UserEntity that = (UserEntity) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (pwd != null ? !pwd.equals(that.pwd) : that.pwd != null) return false;
-        if (joinDate != null ? !joinDate.equals(that.joinDate) : that.joinDate != null) return false;
-        if (type != null ? !type.equals(that.type) : that.type != null) return false;
+        if (!Objects.equals(name, that.name)) return false;
+        if (!Objects.equals(pwd, that.pwd)) return false;
+        if (!Objects.equals(joinDate, that.joinDate)) return false;
+        if (!Objects.equals(type, that.type)) return false;
 
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (pwd != null ? pwd.hashCode() : 0);
-        result = 31 * result + (joinDate != null ? joinDate.hashCode() : 0);
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        return result;
+    private Set<CartsEntity> cartsEntitySet;
+    @OneToMany(mappedBy = "userEntity",targetEntity = CartsEntity.class,fetch = FetchType.EAGER)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    public Set<CartsEntity> getCartsEntitySet() {
+        return cartsEntitySet;
     }
+    public void setCartsEntitySet(Set<CartsEntity> cartsEntitySet) {
+        this.cartsEntitySet = cartsEntitySet;
+    }
+
 }

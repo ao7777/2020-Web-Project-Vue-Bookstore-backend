@@ -10,5 +10,11 @@
         <property name="serverTimezone" value="UTC" />
       </driver-properties>
     </data-source>
+    <data-source source="LOCAL" name="bookstoredata@localhost" uuid="fd3a8d3a-8a9f-4d40-a84d-4af1590c70c9">
+      <driver-ref>mongo</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.dbschema.MongoJdbcDriver</jdbc-driver>
+      <jdbc-url>mongodb://localhost/bookstoredata</jdbc-url>
+    </data-source>
   </component>
 </project>

@@ -14,6 +14,7 @@ public class BookEntity {
     private String press;
     private Date publishDate;
     private int storage;
+    private int sales;
     @Id
     @Column(name = "isbn")
     public String getIsbn() {
@@ -80,6 +81,16 @@ public class BookEntity {
         this.storage = storage;
     }
 
+    @Basic
+    @Column(name="sales")
+    public int getSales() {
+        return sales;
+    }
+
+    public void setSales(int sales) {
+        this.sales = sales;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -92,9 +103,7 @@ public class BookEntity {
         if (!Objects.equals(name, that.name)) return false;
         if (!Objects.equals(author, that.author)) return false;
         if (!Objects.equals(press, that.press)) return false;
-        if (!Objects.equals(publishDate, that.publishDate)) return false;
-
-        return true;
+        return Objects.equals(publishDate, that.publishDate);
     }
 
     @Override
@@ -106,5 +115,14 @@ public class BookEntity {
         result = 31 * result + (press != null ? press.hashCode() : 0);
         result = 31 * result + (publishDate != null ? publishDate.hashCode() : 0);
         return result;
+    }
+
+    private BookInfo bookInfo;
+    @Transient
+    public BookInfo getBookInfo() {
+        return bookInfo;
+    }
+    public void setBookInfo(BookInfo bookInfo) {
+        this.bookInfo = bookInfo;
     }
 }
